@@ -2,7 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.10"
+
     application
+
+    id("com.diffplug.spotless") version "6.10.0"
 }
 
 group = "io.hashfunc"
@@ -26,4 +29,10 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainClass.set("MainKt")
+}
+
+spotless {
+    kotlin {
+        ktlint("0.46.1")
+    }
 }
