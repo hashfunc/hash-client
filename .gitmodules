@@ -1,0 +1,3 @@
+[submodule "hafen-client"]
+	path = hafen-client
+	url = https://github.com/hashfunc/hafen-client.git

@@ -15,7 +15,13 @@ repositories {
     mavenCentral()
 }
 
+val upstreamPath = "hafen-client"
+
 dependencies {
+    implementation(fileTree("${upstreamPath}/lib") { include("**/*.jar") })
+
+    annotationProcessor(files("${upstreamPath}/lib/jglob.jar"))
+
     testImplementation(kotlin("test"))
 }
 
@@ -25,6 +31,34 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.processResources {
+    with(copySpec {
+        from("${upstreamPath}/etc")
+        include(
+            "authsrv.crt",
+            "icon.png",
+            "res-bgload",
+            "res-preload",
+            "ressrv.crt",
+        )
+        rename { "haven/${it}" }
+    })
+    with(copySpec {
+        from("${upstreamPath}/etc")
+        include("ansgar-config.properties")
+        rename { it.replace("ansgar", "haven") }
+        into("../../classes/java")
+    })
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("${upstreamPath}/src")
+        }
+    }
 }
 
 application {
